@@ -1,28 +1,8 @@
-//import database folder, init app(inquire), function called when option is chose, test data in mysql 
-const express = require('express');
 
-const mysql = require('mysql2');
 
-const PORT = process.env.PORT || 3001;
-const app = express();
 
-app.use(express.urlencoded({ extended: false }));
-app.use(express.json());
-
-// Connect to database
-const db = mysql.createConnection(
-  {
-    host: 'localhost',
-    // MySQL username,
-    user: 'root',
-    // TODO: Add MySQL password here
-    password: '',
-    database: 'employee_db'
-  },
-  console.log(`Connected to the employee_db database.`)
-); 
 // Create a employee
-app.post('/api/new-employee', ({ body }, res) => {
+
   const sql = `INSERT INTO movies (first_name)
     VALUES (?)`;
   const params = [body.first_name];
@@ -37,11 +17,11 @@ app.post('/api/new-employee', ({ body }, res) => {
       data: body
     });
   });
-});
+
 
 
 // Delete a employee
-app.delete('/api/employee/:id', (req, res) => {
+
   const sql = `DELETE FROM employee WHERE id = ?`;
   const params = [req.params.id];
   
@@ -60,9 +40,9 @@ app.delete('/api/employee/:id', (req, res) => {
       });
     }
   });
-});
 
-app.get('/api/employee-department', (req, res) => {
+
+
   const sql = `SELECT employee.first_name AS employee, department.department FROM department LEFT JOIN employee ON department.employee_id = employee.id ORDER BY employee.first_name;`;
   db.query(sql, (err, rows) => {
     if (err) {
@@ -74,4 +54,3 @@ app.get('/api/employee-department', (req, res) => {
       data: rows
     });
   });
-});
